@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Local env files
+.env*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Vercel build output
+.vercel/
+
+# IDE files
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Misc
+uploads/
+*.swp
+*.swo
+coverage/
+*.bak
+*.tmp

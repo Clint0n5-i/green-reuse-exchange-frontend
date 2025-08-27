@@ -1,0 +1,26 @@
+export const KISII_SUB_COUNTIES = [
+  'Bomachoge Borabu',
+  'Bomachoge Chache',
+  'Bobasi',
+  'Bonchari',
+  'Kitutu Chache North',
+  'Kitutu Chache South',
+  'Nyaribari Chache',
+  'Nyaribari Masaba',
+  'South Mugirango',
+  'Ogembo',
+  'Other',
+]
+export const addressOptions = {
+  'Bomachoge Borabu': ['Nyamache Town', 'Nyamache Market', 'Nyamache Hospital'],
+  'Bomachoge Chache': ['Ogembo Town', 'Ogembo Market', 'Ogembo Hospital'],
+  'Bobasi': ['Nyamarambe', 'Nyamarambe Market', 'Nyamarambe Hospital'],
+  'Bonchari': ['Suneka', 'Suneka Market', 'Suneka Hospital'],
+  'Kitutu Chache North': ['Mosocho', 'Mosocho Market', 'Mosocho Hospital'],
+  'Kitutu Chache South': ['Kisii Town', 'Kisii Market', 'Kisii Hospital'],
+  'Nyaribari Chache': ['Keumbu', 'Keumbu Market', 'Keumbu Hospital'],
+  'Nyaribari Masaba': ['Keroka', 'Keroka Market', 'Keroka Hospital'],
+  'South Mugirango': ['Tabaka', 'Tabaka Market', 'Tabaka Hospital'],
+  'Ogembo': ['Ogembo Town', 'Ogembo Market', 'Ogembo Hospital'],
+  'Other': ['Other Address'],
+};
