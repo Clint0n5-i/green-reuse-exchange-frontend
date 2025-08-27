@@ -10,9 +10,20 @@ export default defineConfig(({ mode }) => {
             sourcemap: false,
             minify: 'esbuild',
             chunkSizeWarningLimit: 600,
+            // Add these for better Vercel compatibility
+            rollupOptions: {
+                output: {
+                    manualChunks: undefined,
+                    inlineDynamicImports: false,
+                    entryFileNames: '[name]-[hash].js',
+                    chunkFileNames: '[name]-[hash].js',
+                    assetFileNames: '[name]-[hash].[ext]'
+                }
+            }
         },
         base: './',
     };
+    
     if (mode === 'development') {
         config.server = {
             port: 3000,
