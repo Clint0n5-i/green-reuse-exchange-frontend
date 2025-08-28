@@ -68,7 +68,6 @@ const Navbar = () => {
                                         User Dashboard
                                     </Link>
                                 ) : null}
-                                <span className="text-sm text-gray-700">Welcome, {(admin && admin.email) || (user && user.name)}</span>
                                 <button
                                     onClick={admin ? adminLogout : handleLogout}
                                     className="ml-2 text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium"
