@@ -56,57 +56,8 @@ const BrowseItems = () => {
 
     return (
     <div className="flex">
-            {/* Sidebar for filters */}
-            <div className="w-1/4 bg-gray-100 p-4 min-h-screen">
-                <h3 className="text-lg font-semibold mb-4">Quick Filters</h3>
-                <div className="space-y-4">
-                    <button
-                        onClick={() => fetchItems()}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        All Items
-                    </button>
-                    <button
-                        onClick={() => fetchItems('', '', 'Kisii Town')}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        Kisii Town
-                    </button>
-                    <button
-                        onClick={() => fetchItems('', '', 'Ogembo')}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        Ogembo
-                    </button>
-                    <button
-                        onClick={() => fetchItems('', '', 'Keroka')}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        Keroka
-                    </button>
-                    <button
-                        onClick={() => fetchItems('', 'BOOKS', '')}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        Books
-                    </button>
-                    <button
-                        onClick={() => fetchItems('', 'FURNITURE', '')}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        Furniture
-                    </button>
-                    <button
-                        onClick={() => fetchItems('', 'ELECTRONICS', '')}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                    >
-                        Electronics
-                    </button>
-                </div>
-            </div>
-
-            {/* Main content */}
-            <div className="w-3/4 p-4">
+        {/* Main content - now full width */}
+        <div className="w-full p-4">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-800 mb-2">Browse Items</h1>
                     <p className="text-gray-600">Find reusable items in your community</p>

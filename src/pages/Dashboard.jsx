@@ -210,32 +210,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* Analytics */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="card">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Items by Category</h3>
-                    <div className="space-y-2">
-                        {Object.entries(itemsByCategory).map(([category, count]) => (
-                            <div key={category} className="flex justify-between items-center">
-                                <span className="text-gray-600">{category}</span>
-                                <span className="font-semibold text-gray-800">{count}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="card">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Items by Location</h3>
-                    <div className="space-y-2">
-                        {Object.entries(itemsByLocation).map(([location, count]) => (
-                            <div key={location} className="flex justify-between items-center">
-                                <span className="text-gray-600">{location}</span>
-                                <span className="font-semibold text-gray-800">{count}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            {/* ...removed quick filters/analytics bar... */}
 
             {/* Items Management */}
             <div className="card">
