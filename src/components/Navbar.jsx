@@ -39,6 +39,7 @@ const Navbar = () => {
                                         >
                                             Browse Items
                                         </Link>
+                                        {/* Hide Post Item tab for admins */}
                                         <Link
                                             to="/post-item"
                                             className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"

@@ -196,6 +196,7 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
 
                             {/* Edit button removed */}
 
+                            {/* Hide claim/unclaim button for admins */}
                             {user && item.postedBy?.id !== user.id && user.role !== 'ADMIN' && (
                                 <>
                                     {currentStatus === 'AVAILABLE' && (
