@@ -50,6 +50,7 @@ export const itemService = {
     getItemById: (id) => api.get(`/items/${id}`),
     createItem: (itemData) => api.post('/items', itemData),
     createItemWithUpload: (formData) => api.post('/items/upload', formData),
+    updateItem: (id, itemData) => api.put(`/items/${id}`, itemData),
     claimItem: (id) => api.put(`/items/${id}/claim`),
     unclaimItem: (id) => api.put(`/items/${id}/unclaim`),
     deleteItem: (id) => api.delete(`/items/${id}`),

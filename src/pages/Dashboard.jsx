@@ -1,13 +1,42 @@
- import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext.jsx'
-import { adminService } from '../services/api.js'
+import { adminService, itemService } from '../services/api.js'
 import ItemCard from '../components/ItemCard.jsx'
 import { Shield, Trash2, Users, Package, TrendingUp } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const Dashboard = () => {
-    const { admin } = useAuth()
+    const { admin, user } = useAuth()
     const [items, setItems] = useState([])
+    const [editingItem, setEditingItem] = useState(null);
+    const [editForm, setEditForm] = useState({});
+    const handleEditClick = (item) => {
+        setEditingItem(item);
+        setEditForm({
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            location: item.location,
+            type: item.type,
+            exchangeFor: item.exchangeFor,
+        });
+    };
+
+    const handleEditChange = (e) => {
+        setEditForm({ ...editForm, [e.target.name]: e.target.value });
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await itemService.updateItem(editingItem.id, editForm);
+            toast.success('Item updated successfully');
+            setEditingItem(null);
+            fetchItems();
+        } catch (error) {
+            toast.error('Failed to update item');
+        }
+    };
     const [loading, setLoading] = useState(true)
     const [users, setUsers] = useState([])
     const [usersLoading, setUsersLoading] = useState(true)
@@ -16,8 +45,10 @@ const Dashboard = () => {
         if (admin) {
             fetchItems()
             fetchUsers()
+        } else if (user) {
+            fetchUserItems()
         }
-    }, [admin])
+    }, [admin, user])
 
     const fetchItems = async () => {
         setLoading(true)
@@ -27,6 +58,21 @@ const Dashboard = () => {
         } catch (error) {
             console.error('Error fetching items:', error)
             toast.error('Failed to fetch items')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // For regular users, fetch only their items
+    const fetchUserItems = async () => {
+        setLoading(true)
+        try {
+            const response = await itemService.getAllItems()
+            // Filter items owned by the user
+            const userId = user?.id || user?._id
+            setItems(response.data.filter(item => item.ownerId === userId))
+        } catch (error) {
+            toast.error('Failed to fetch your items')
         } finally {
             setLoading(false)
         }
@@ -212,7 +258,19 @@ const Dashboard = () => {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {items.map(item => (
                             <div key={item.id} className="relative">
-                                <ItemCard item={item} onUpdate={fetchItems} />
+                                <ItemCard item={item} onUpdate={admin ? fetchItems : fetchUserItems} />
+                                {/* Show edit button only if user is owner and not admin. Support multiple owner field names. */}
+                                {(!admin && user && (
+                                    [item.ownerId, item.userId, item.owner, item._owner].includes(user.id || user._id)
+                                )) && (
+                                    <button
+                                        onClick={() => handleEditClick(item)}
+                                        className="absolute top-2 left-2 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                                        title="Edit item"
+                                    >
+                                        Edit
+                                    </button>
+                                )}
                                 <button
                                     onClick={() => handleDeleteItem(item.id)}
                                     className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
@@ -225,47 +283,115 @@ const Dashboard = () => {
                     </div>
                 )}
             </div>
-
-            {/* Users Management */}
-            <div className="card mt-8">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-semibold text-gray-800">Users</h3>
-                    <div className="text-sm text-gray-600">
-                        {usersLoading ? 'Loading...' : `${users.length} users`}
+        
+        {/* Edit Modal/Form */}
+        {editingItem && (
+            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+                <form
+                    onSubmit={handleEditSubmit}
+                    className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+                >
+                    <h2 className="text-xl font-bold mb-4">Edit Item</h2>
+                    <input
+                        name="title"
+                        value={editForm.title}
+                        onChange={handleEditChange}
+                        className="w-full mb-2 p-2 border rounded"
+                        placeholder="Title"
+                    />
+                    <textarea
+                        name="description"
+                        value={editForm.description}
+                        onChange={handleEditChange}
+                        className="w-full mb-2 p-2 border rounded"
+                        placeholder="Description"
+                    />
+                    <input
+                        name="category"
+                        value={editForm.category}
+                        onChange={handleEditChange}
+                        className="w-full mb-2 p-2 border rounded"
+                        placeholder="Category"
+                    />
+                    <input
+                        name="location"
+                        value={editForm.location}
+                        onChange={handleEditChange}
+                        className="w-full mb-2 p-2 border rounded"
+                        placeholder="Location"
+                    />
+                    <input
+                        name="type"
+                        value={editForm.type}
+                        onChange={handleEditChange}
+                        className="w-full mb-2 p-2 border rounded"
+                        placeholder="Type"
+                    />
+                    <input
+                        name="exchangeFor"
+                        value={editForm.exchangeFor}
+                        onChange={handleEditChange}
+                        className="w-full mb-2 p-2 border rounded"
+                        placeholder="Exchange For"
+                    />
+                    <div className="flex justify-end gap-2 mt-4">
+                        <button
+                            type="button"
+                            onClick={() => setEditingItem(null)}
+                            className="px-4 py-2 bg-gray-300 rounded"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-green-600 text-white rounded"
+                        >
+                            Save
+                        </button>
                     </div>
-                </div>
-                {usersLoading ? (
-                    <div className="flex justify-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-                    </div>
-                ) : users.length === 0 ? (
-                    <div className="text-center py-12">
-                        <Users className="mx-auto text-gray-400 mb-4" size={48} />
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">No users found</h3>
-                        <p className="text-gray-600">User management endpoints may not be implemented on the backend yet.</p>
-                    </div>
-                ) : (
-                    <div className="space-y-3">
-                        {users.map(u => (
-                            <div key={u.id} className="flex items-center justify-between p-4 bg-white rounded-lg border">
-                                <div>
-                                    <div className="font-semibold text-gray-800">{u.name} <span className="text-xs ml-2 px-2 py-0.5 rounded-full bg-gray-100">{u.role}</span></div>
-                                    <div className="text-sm text-gray-600">{u.email} • {u.phone} • {u.location}</div>
-                                    {u.suspensionReason && (
-                                        <div className="text-xs text-red-600 mt-1">Suspended: {u.suspensionReason}</div>
-                                    )}
-                                </div>
-                                <div className="flex gap-2">
-                                    <button onClick={() => suspendUser(u.id)} className="px-3 py-1.5 text-sm bg-yellow-600 hover:bg-yellow-700 text-white rounded-md">Suspend</button>
-                                    <button onClick={() => unsuspendUser(u.id)} className="px-3 py-1.5 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md">Unsuspend</button>
-                                    <button onClick={() => deleteUser(u.id)} className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center gap-1"><Trash2 size={14}/>Delete</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                </form>
             </div>
+        )}
+
+        {/* Users Management */}
+        <div className="card mt-8">
+            <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-800">Users</h3>
+                <div className="text-sm text-gray-600">
+                    {usersLoading ? 'Loading...' : `${users.length} users`}
+                </div>
+            </div>
+            {usersLoading ? (
+                <div className="flex justify-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                </div>
+            ) : users.length === 0 ? (
+                <div className="text-center py-12">
+                    <Users className="mx-auto text-gray-400 mb-4" size={48} />
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">No users found</h3>
+                </div>
+            ) : (
+                <div className="space-y-3">
+                    {users.map(u => (
+                        <div key={u.id} className="flex items-center justify-between p-4 bg-white rounded-lg border">
+                            <div>
+                                <div className="font-semibold text-gray-800">{u.name} <span className="text-xs ml-2 px-2 py-0.5 rounded-full bg-gray-100">{u.role}</span></div>
+                                <div className="text-sm text-gray-600">{u.email} • {u.phone} • {u.location}</div>
+                                {u.suspensionReason && (
+                                    <div className="text-xs text-red-600 mt-1">Suspended: {u.suspensionReason}</div>
+                                )}
+                            </div>
+                            <div className="flex gap-2">
+                                <button onClick={() => suspendUser(u.id)} className="px-3 py-1.5 text-sm bg-yellow-600 hover:bg-yellow-700 text-white rounded-md">Suspend</button>
+                                <button onClick={() => unsuspendUser(u.id)} className="px-3 py-1.5 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md">Unsuspend</button>
+                                <button onClick={() => deleteUser(u.id)} className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center gap-1"><Trash2 size={14}/>Delete</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
+    </div>
     )
 }
 
