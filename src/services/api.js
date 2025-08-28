@@ -95,7 +95,7 @@ export const authService = {
 
 export const adminService = {
     getAllItems: () => api.get('/admin/items'),
-    deleteItem: (id) => api.delete(`/admin/items/${id}`),
+    deleteItem: (id) => api.delete(`/admin/items/${id}`, { headers: { 'Content-Type': 'application/json' }, data: {} }),
     // User management (requires backend support)
     getUsers: () => api.get('/admin/users'),
     suspendUser: (id, reason) => api.put(`/admin/users/${id}/suspend`, reason, { headers: { 'Content-Type': 'text/plain' } }),

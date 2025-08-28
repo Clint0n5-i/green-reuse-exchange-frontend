@@ -273,14 +273,14 @@ const Dashboard = () => {
                                         Edit
                                     </button>
                                 )}
-                                {/* Unclaim button for claimed items */}
-                                {item.status === 'CLAIMED' && (
+                                {/* Unclaim button for claimed items, only for regular users */}
+                                {(!admin && item.status === 'CLAIMED') && (
                                     <button
                                         onClick={async () => {
                                             try {
                                                 await itemService.unclaimItem(item.id);
                                                 toast.success('Item unclaimed');
-                                                admin ? fetchItems() : fetchUserItems();
+                                                fetchUserItems();
                                             } catch (error) {
                                                 toast.error('Failed to unclaim item');
                                             }
