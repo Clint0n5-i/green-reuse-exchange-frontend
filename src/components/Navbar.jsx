@@ -34,6 +34,12 @@ const Navbar = () => {
                                 {user && user.role !== 'ADMIN' && (
                                     <>
                                         <Link
+                                            to="/browse"
+                                            className="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium"
+                                        >
+                                            Browse Items
+                                        </Link>
+                                        <Link
                                             to="/post-item"
                                             className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
                                         >
@@ -72,6 +78,12 @@ const Navbar = () => {
                             </>
                         ) : (
                             <div className="flex items-center space-x-2">
+                                <Link
+                                    to="/browse"
+                                    className="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium"
+                                >
+                                    Browse Items
+                                </Link>
                                 <Link
                                     to="/about"
                                     className="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium"
