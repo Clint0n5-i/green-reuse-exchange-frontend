@@ -19,6 +19,11 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
             return;
         }
 
+        if (user.role === 'ADMIN') {
+            toast.error('Admins are not allowed to claim items');
+            return;
+        }
+
         if (item.postedBy?.id === user.id) {
             toast.error('You cannot claim your own item');
             return;
@@ -188,6 +193,8 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
                                     {showContactDetails ? 'Hide Contact' : 'Show Contact'}
                                 </button>
                             )}
+
+                            {/* Edit button removed */}
 
                             {user && item.postedBy?.id !== user.id && user.role !== 'ADMIN' && (
                                 <>

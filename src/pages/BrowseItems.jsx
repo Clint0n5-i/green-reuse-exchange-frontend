@@ -8,6 +8,7 @@ const BrowseItems = () => {
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(true)
     const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
+    // Removed item editing state
 
     useEffect(() => {
         fetchItems()
@@ -45,8 +46,10 @@ const BrowseItems = () => {
     }
 
     const handleItemUpdate = () => {
-        fetchItems() // Refresh the list after an item is claimed
+        fetchItems() // Refresh the list after an item is claimed or edited
     }
+
+    // Removed item editing handlers
 
     const availableItems = items.filter(item => item.status === 'AVAILABLE')
     const claimedItems = items.filter(item => item.status === 'CLAIMED')
@@ -116,11 +119,11 @@ const BrowseItems = () => {
                             <div className="col-span-full text-center text-gray-500 py-8">No available items found.</div>
                         ) : (
                             availableItems.map(item => (
-                                <ItemCard
-                                    key={item.id}
-                                    item={item}
-                                    onUpdate={handleItemUpdate}
-                                />
+                                    <ItemCard
+                                        key={item.id}
+                                        item={item}
+                                        onUpdate={handleItemUpdate}
+                                    />
                             ))
                         )}
                     </div>
@@ -154,6 +157,7 @@ const BrowseItems = () => {
                     </div>
                 )}
             </div>
+    {/* No edit modal present */}
         </div>
     )
 }
