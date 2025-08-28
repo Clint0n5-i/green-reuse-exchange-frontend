@@ -50,10 +50,42 @@ export const itemService = {
     getItemById: (id) => api.get(`/items/${id}`),
     createItem: (itemData) => api.post('/items', itemData),
     createItemWithUpload: (formData) => api.post('/items/upload', formData),
-    updateItem: (id, itemData) => api.put(`/items/${id}`, itemData),
-    claimItem: (id) => api.put(`/items/${id}/claim`),
-    unclaimItem: (id) => api.put(`/items/${id}/unclaim`),
-    deleteItem: (id) => api.delete(`/items/${id}`),
+    updateItem: async (id, itemData) => {
+        try {
+            return await api.put(`/items/${id}`, itemData);
+        } catch (error) {
+            const msg = error?.response?.data?.message || error?.message || 'Failed to update item';
+            if (typeof window !== 'undefined' && window.toast) window.toast.error(`Update failed: ${msg}`);
+            throw error;
+        }
+    },
+    claimItem: async (id) => {
+        try {
+            return await api.put(`/items/${id}/claim`);
+        } catch (error) {
+            const msg = error?.response?.data?.message || error?.message || 'Failed to claim item';
+            if (typeof window !== 'undefined' && window.toast) window.toast.error(`Claim failed: ${msg}`);
+            throw error;
+        }
+    },
+    unclaimItem: async (id) => {
+        try {
+            return await api.put(`/items/${id}/unclaim`);
+        } catch (error) {
+            const msg = error?.response?.data?.message || error?.message || 'Failed to unclaim item';
+            if (typeof window !== 'undefined' && window.toast) window.toast.error(`Unclaim failed: ${msg}`);
+            throw error;
+        }
+    },
+    deleteItem: async (id) => {
+        try {
+            return await api.delete(`/items/${id}`);
+        } catch (error) {
+            const msg = error?.response?.data?.message || error?.message || 'Failed to delete item';
+            if (typeof window !== 'undefined' && window.toast) window.toast.error(`Delete failed: ${msg}`);
+            throw error;
+        }
+    },
 };
 
 export const authService = {

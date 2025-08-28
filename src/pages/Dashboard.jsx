@@ -101,7 +101,9 @@ const Dashboard = () => {
             toast.success('Item deleted successfully')
             fetchItems() // Refresh the list
         } catch (error) {
-            toast.error('Failed to delete item')
+            const msg = error?.response?.data?.message || error?.message || 'Failed to delete item';
+            toast.error(`Delete failed: ${msg}`)
+            console.error('Delete error:', error)
         }
     }
 
@@ -269,6 +271,24 @@ const Dashboard = () => {
                                         title="Edit item"
                                     >
                                         Edit
+                                    </button>
+                                )}
+                                {/* Unclaim button for claimed items */}
+                                {item.status === 'CLAIMED' && (
+                                    <button
+                                        onClick={async () => {
+                                            try {
+                                                await itemService.unclaimItem(item.id);
+                                                toast.success('Item unclaimed');
+                                                admin ? fetchItems() : fetchUserItems();
+                                            } catch (error) {
+                                                toast.error('Failed to unclaim item');
+                                            }
+                                        }}
+                                        className="absolute bottom-2 left-2 p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors"
+                                        title="Unclaim item"
+                                    >
+                                        Unclaim
                                     </button>
                                 )}
                                 <button
