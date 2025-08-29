@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import NotificationBell from './NotificationBell';
-import NotificationList from './NotificationList';
 import { api } from '../services/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -8,23 +6,15 @@ import { useAuth } from '../contexts/AuthContext';
 const Navbar = () => {
 
     const { user, admin, logout, adminLogout } = useAuth();
-    const [notifications, setNotifications] = useState([]);
-    const [showNotifications, setShowNotifications] = useState(false);
 
-    useEffect(() => {
-        if (user) {
-            fetchNotifications();
-        }
-    }, [user]);
-
-    const fetchNotifications = async () => {
-        try {
-            const res = await api.get('/notifications');
-            setNotifications(res.data);
-        } catch (err) {
-            // Silent fail
-        }
-    };
+    // const fetchNotifications = async () => {
+    //     try {
+    //         const res = await api.get('/notifications');
+    //         setNotifications(res.data);
+    //     } catch (err) {
+    //         // Silent fail
+    //     }
+    // };
 
     const handleMarkRead = async (id) => {
         await api.post(`/notifications/${id}/read`);
@@ -53,12 +43,6 @@ const Navbar = () => {
                     </div>
 
                     <div className="flex items-center space-x-4">
-                        {user && (
-                            <NotificationBell
-                                count={notifications.filter(n => !n.read).length}
-                                onClick={() => setShowNotifications(v => !v)}
-                            />
-                        )}
                         {/* Removed dark mode toggle button */}
                         {(user || admin) ? (
                             <>
@@ -138,12 +122,6 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-            {showNotifications && user && (
-                <NotificationList
-                    notifications={notifications}
-                    onMarkRead={handleMarkRead}
-                />
-            )}
         </nav>
     );
 };
