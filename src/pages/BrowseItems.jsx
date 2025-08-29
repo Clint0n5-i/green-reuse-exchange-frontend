@@ -95,19 +95,19 @@ const BrowseItems = () => {
                     </div>
                 </div>
 
-                {/* Stats */}
-                <div className="grid md:grid-cols-3 gap-4 mb-8">
-                    <div className="card text-center">
-                        <div className="text-2xl font-bold text-primary-600">{availableItems.length}</div>
-                        <div className="text-sm text-gray-600">Available Items</div>
+                {/* Stats - single row on mobile */}
+                <div className="flex flex-wrap gap-2 mb-8 justify-center items-center">
+                    <div className="card text-center flex-1 min-w-[100px] max-w-[140px] p-2">
+                        <div className="text-lg font-bold text-primary-600">{availableItems.length}</div>
+                        <div className="text-xs text-gray-600 whitespace-nowrap">Available</div>
                     </div>
-                    <div className="card text-center">
-                        <div className="text-2xl font-bold text-gray-600">{claimedItems.length}</div>
-                        <div className="text-sm text-gray-600">Claimed Items</div>
+                    <div className="card text-center flex-1 min-w-[100px] max-w-[140px] p-2">
+                        <div className="text-lg font-bold text-gray-600">{claimedItems.length}</div>
+                        <div className="text-xs text-gray-600 whitespace-nowrap">Claimed</div>
                     </div>
-                    <div className="card text-center">
-                        <div className="text-2xl font-bold text-green-600">{items.length}</div>
-                        <div className="text-sm text-gray-600">Total Items</div>
+                    <div className="card text-center flex-1 min-w-[100px] max-w-[140px] p-2">
+                        <div className="text-lg font-bold text-green-600">{items.length}</div>
+                        <div className="text-xs text-gray-600 whitespace-nowrap">Total</div>
                     </div>
                 </div>
 

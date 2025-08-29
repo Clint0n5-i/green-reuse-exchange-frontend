@@ -9,25 +9,36 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#2ecc71', // emerald brand
-                    50: '#ecfdf5',
-                    100: '#d1fae5',
-                    200: '#a7f3d0',
-                    300: '#6ee7b7',
-                    400: '#34d399',
-                    500: '#10b981',
-                    600: '#059669',
-                    700: '#047857',
-                    800: '#065f46',
-                    900: '#064e3b',
+                    DEFAULT: '#388e3c', // deep green
+                    50: '#e8f5e9',
+                    100: '#c8e6c9',
+                    200: '#a5d6a7',
+                    300: '#81c784',
+                    400: '#66bb6a',
+                    500: '#4caf50',
+                    600: '#43a047',
+                    700: '#388e3c',
+                    800: '#2e7031',
+                    900: '#1b5e20',
+                },
+                accent: {
+                    DEFAULT: '#ffd600', // yellow accent
+                    100: '#fff9c4',
+                    200: '#fff59d',
+                    300: '#fff176',
+                    400: '#ffee58',
+                    500: '#ffd600',
                 },
                 mint: {
                     DEFAULT: '#a5dfc7', // mint accent
                 },
+                sky: {
+                    DEFAULT: '#81d4fa', // light blue accent
+                },
                 dark: {
-                    900: '#000000',
-                    800: '#212121',
-                    700: '#303030',
+                    900: '#212121',
+                    800: '#303030',
+                    700: '#424242',
                 },
             },
             keyframes: {

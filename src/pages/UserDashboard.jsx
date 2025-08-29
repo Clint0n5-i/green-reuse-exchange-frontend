@@ -165,38 +165,35 @@ const UserDashboard = () => {
                 <p className="text-gray-600">Welcome back, {user.name}!</p>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
-                <div className="card text-center">
-                    <div className="flex justify-center mb-2">
-                        <Package className="text-primary-600" size={24} />
+            {/* Stats Cards - single row on mobile */}
+            <div className="flex flex-wrap gap-2 mb-8 justify-center items-center">
+                <div className="card text-center flex-1 min-w-[90px] max-w-[120px] p-2">
+                    <div className="flex justify-center mb-1">
+                        <Package className="text-primary-600" size={20} />
                     </div>
-                    <div className="text-2xl font-bold text-gray-800">{dashboard.totalPostedItems}</div>
-                    <div className="text-sm text-gray-600">Posted Items</div>
+                    <div className="text-lg font-bold text-gray-800">{dashboard.totalPostedItems}</div>
+                    <div className="text-xs text-gray-600 whitespace-nowrap">Posted</div>
                 </div>
-
-                <div className="card text-center">
-                    <div className="flex justify-center mb-2">
-                        <CheckCircle className="text-green-600" size={24} />
+                <div className="card text-center flex-1 min-w-[90px] max-w-[120px] p-2">
+                    <div className="flex justify-center mb-1">
+                        <CheckCircle className="text-green-600" size={20} />
                     </div>
-                    <div className="text-2xl font-bold text-gray-800">{dashboard.availableItems}</div>
-                    <div className="text-sm text-gray-600">Available</div>
+                    <div className="text-lg font-bold text-gray-800">{dashboard.availableItems}</div>
+                    <div className="text-xs text-gray-600 whitespace-nowrap">Available</div>
                 </div>
-
-                <div className="card text-center">
-                    <div className="flex justify-center mb-2">
-                        <Clock className="text-yellow-600" size={24} />
+                <div className="card text-center flex-1 min-w-[90px] max-w-[120px] p-2">
+                    <div className="flex justify-center mb-1">
+                        <Clock className="text-yellow-600" size={20} />
                     </div>
-                    <div className="text-2xl font-bold text-gray-800">{dashboard.claimedItemsCount}</div>
-                    <div className="text-sm text-gray-600">Claimed</div>
+                    <div className="text-lg font-bold text-gray-800">{dashboard.claimedItemsCount}</div>
+                    <div className="text-xs text-gray-600 whitespace-nowrap">Claimed</div>
                 </div>
-
-                <div className="card text-center">
-                    <div className="flex justify-center mb-2">
-                        <User className="text-purple-600" size={24} />
+                <div className="card text-center flex-1 min-w-[90px] max-w-[120px] p-2">
+                    <div className="flex justify-center mb-1">
+                        <User className="text-purple-600" size={20} />
                     </div>
-                    <div className="text-2xl font-bold text-gray-800">{dashboard.totalClaimedItems}</div>
-                    <div className="text-sm text-gray-600">Items Claimed</div>
+                    <div className="text-lg font-bold text-gray-800">{dashboard.totalClaimedItems}</div>
+                    <div className="text-xs text-gray-600 whitespace-nowrap">Items Claimed</div>
                 </div>
             </div>
 
@@ -266,7 +263,7 @@ const UserDashboard = () => {
                         <h3 className="text-lg font-semibold mb-4">Edit Item</h3>
                         <form onSubmit={handleEditFormSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Title</label>
+                                <label className="inline-block w-24 text-sm font-medium text-gray-700 align-middle">Title</label>
                                 <input
                                     type="text"
                                     name="title"
@@ -277,7 +274,7 @@ const UserDashboard = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Description</label>
+                                <label className="inline-block w-24 text-sm font-medium text-gray-700 align-middle">Description</label>
                                 <textarea
                                     name="description"
                                     value={editForm.description}
@@ -288,7 +285,7 @@ const UserDashboard = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Category</label>
+                                <label className="inline-block w-24 text-sm font-medium text-gray-700 align-middle">Category</label>
                                 <input
                                     type="text"
                                     name="category"
@@ -299,7 +296,7 @@ const UserDashboard = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Location</label>
+                                <label className="inline-block w-24 text-sm font-medium text-gray-700 align-middle">Location</label>
                                 <input
                                     type="text"
                                     name="location"
@@ -310,7 +307,7 @@ const UserDashboard = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Images</label>
+                                <label className="inline-block w-24 text-sm font-medium text-gray-700 align-middle">Images</label>
                                 <input
                                     type="file"
                                     multiple
@@ -376,19 +373,19 @@ const UserDashboard = () => {
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-500">Name</label>
+                        <label className="inline-block w-24 text-sm font-medium text-gray-500 align-middle">Name</label>
                         <p className="mt-1 text-gray-800">{user.name}</p>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-500">Email</label>
+                        <label className="inline-block w-24 text-sm font-medium text-gray-500 align-middle">Email</label>
                         <p className="mt-1 text-gray-800">{user.email}</p>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-500">Phone</label>
+                        <label className="inline-block w-24 text-sm font-medium text-gray-500 align-middle">Phone</label>
                         <p className="mt-1 text-gray-800">{user.phone || 'Not provided'}</p>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-500">Location</label>
+                        <label className="inline-block w-24 text-sm font-medium text-gray-500 align-middle">Location</label>
                         <p className="mt-1 text-gray-800">{user.location || 'Not provided'}</p>
                     </div>
                 </div>
