@@ -194,7 +194,7 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
                                 </button>
                             )}
 
-                            {/* Edit button removed */}
+                            {/* Edit button for owners removed as requested. Only top edit button remains. */}
 
                             {/* Hide claim/unclaim button for admins */}
                             {user && item.postedBy?.id !== user.id && user.role !== 'ADMIN' && (

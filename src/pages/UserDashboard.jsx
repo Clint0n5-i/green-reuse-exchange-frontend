@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../services/api';
 import ItemCard from '../components/ItemCard';
@@ -12,6 +12,73 @@ const UserDashboard = () => {
     const [activeTab, setActiveTab] = useState('posted');
     const [postedItems, setPostedItems] = useState([]);
     const [claimedItems, setClaimedItems] = useState([]);
+    const [editingItem, setEditingItem] = useState(null);
+    const [editForm, setEditForm] = useState({ title: '', description: '', category: '', location: '', images: [] });
+    const [editImagePreviews, setEditImagePreviews] = useState([]);
+    const fileInputRef = useRef();
+    const [editLoading, setEditLoading] = useState(false);
+    // Handle edit button click
+    const handleEditItem = (item) => {
+        setEditingItem(item);
+        setEditForm({
+            title: item.title || '',
+            description: item.description || '',
+            category: item.category || '',
+            location: item.location || '',
+            images: [] // new images to upload
+        });
+        // Show existing images as preview
+        setEditImagePreviews(item.imageIds ? item.imageIds.map(id => `${import.meta.env.VITE_API_URL}/items/images/${id}`) : []);
+    };
+
+    // Handle edit form change
+    const handleEditFormChange = (e) => {
+        const { name, value } = e.target;
+        setEditForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    // Handle image file selection
+    const handleEditImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setEditForm(prev => ({ ...prev, images: files }));
+        setEditImagePreviews(files.map(file => URL.createObjectURL(file)));
+    };
+
+    // Remove selected image preview
+    const handleRemoveEditImage = (index) => {
+        setEditImagePreviews(prev => prev.filter((_, i) => i !== index));
+        setEditForm(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
+    };
+
+    // Handle edit form submit
+    const handleEditFormSubmit = async (e) => {
+        e.preventDefault();
+        if (!editingItem) return;
+        setEditLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append('title', editForm.title);
+            formData.append('description', editForm.description);
+            formData.append('category', editForm.category);
+            formData.append('location', editForm.location);
+            // Add images
+            if (editForm.images && editForm.images.length > 0) {
+                editForm.images.forEach((img, idx) => {
+                    formData.append('images', img);
+                });
+            }
+            await api.put(`/items/${editingItem.id}/edit`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            toast.success('Item updated successfully');
+            setEditingItem(null);
+            fetchPostedItems();
+        } catch (err) {
+            toast.error('Failed to update item');
+        } finally {
+            setEditLoading(false);
+        }
+    };
 
     useEffect(() => {
         fetchDashboard();
@@ -178,15 +245,102 @@ const UserDashboard = () => {
                                         >
                                             <Trash2 size={16} />
                                         </button>
-                                        {/* Add edit button if needed */}
-                                        {/* <button
-                                            onClick={() => handleEditItem(item.id)}
+                                        <button
+                                            onClick={() => handleEditItem(item)}
                                             className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
                                             title="Edit item"
                                         >
                                             <Edit size={16} />
-                                        </button> */}
+                                        </button>
                                     </div>
+            {/* Edit Item Modal */}
+            {editingItem && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+                        <button
+                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                            onClick={() => setEditingItem(null)}
+                        >
+                            &times;
+                        </button>
+                        <h3 className="text-lg font-semibold mb-4">Edit Item</h3>
+                        <form onSubmit={handleEditFormSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Title</label>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    value={editForm.title}
+                                    onChange={handleEditFormChange}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea
+                                    name="description"
+                                    value={editForm.description}
+                                    onChange={handleEditFormChange}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                                    rows={3}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Category</label>
+                                <input
+                                    type="text"
+                                    name="category"
+                                    value={editForm.category}
+                                    onChange={handleEditFormChange}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Location</label>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    value={editForm.location}
+                                    onChange={handleEditFormChange}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Images</label>
+                                <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    ref={fileInputRef}
+                                    onChange={handleEditImageChange}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                                />
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {editImagePreviews.map((src, idx) => (
+                                        <div key={idx} className="relative">
+                                            <img src={src} alt="preview" className="w-16 h-16 object-cover rounded" />
+                                            <button type="button" className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1" onClick={() => handleRemoveEditImage(idx)}>&times;</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex justify-end">
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    disabled={editLoading}
+                                >
+                                    {editLoading ? 'Saving...' : 'Save Changes'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
                                 </div>
                             ))}
                         </div>
