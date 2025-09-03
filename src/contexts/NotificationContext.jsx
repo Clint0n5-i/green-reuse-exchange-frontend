@@ -14,7 +14,7 @@ export const NotificationProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await fetchNotifications();
-      setNotifications(data);
+  setNotifications(Array.isArray(data) ? data : []);
     } catch (e) {
       // handle error
     } finally {
