@@ -120,6 +120,7 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
                             src={imageUrls[0]}
                             alt={item.title}
                             className="w-full h-64 object-cover mb-2 rounded-t-lg"
+                            loading="lazy"
                         />
                         
                         {/* Multiple images indicator */}
@@ -271,6 +272,7 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
                                 src={imageUrls[currentImageIndex]}
                                 alt={`${item.title} - Image ${currentImageIndex + 1}`}
                                 className="w-full max-h-[80vh] object-contain rounded-lg"
+                                loading="lazy"
                             />
                             
                             {imageUrls.length > 1 && (
@@ -311,6 +313,7 @@ const ItemCard = ({ item, onUpdate, onClick }) => {
                                                 ? 'border-white' 
                                                 : 'border-transparent opacity-60'
                                         } hover:opacity-100`}
+                                        loading="lazy"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setCurrentImageIndex(index);

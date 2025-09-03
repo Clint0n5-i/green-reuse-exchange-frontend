@@ -24,7 +24,6 @@ const Home = () => {
 
         fetchRecentItems()
     }, [])
-
     const features = [
         {
             icon: <Leaf className="w-8 h-8 text-primary-600" />,

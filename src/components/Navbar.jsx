@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { api } from '../services/api';
+import React, { useState } from 'react';
+import NotificationBell from './NotificationBell';
+import NotificationList from './NotificationList';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotifications } from '../contexts/NotificationContext';
 
 const Navbar = () => {
 
     const { user, admin, logout, adminLogout } = useAuth();
-
-    // const fetchNotifications = async () => {
-    //     try {
-    //         const res = await api.get('/notifications');
-    //         setNotifications(res.data);
-    //     } catch (err) {
-    //         // Silent fail
-    //     }
-    // };
-
-    const handleMarkRead = async (id) => {
-        await api.post(`/notifications/${id}/read`);
-        fetchNotifications();
-    };
+    const { notifications, markAsRead } = useNotifications();
+    const [showNotifications, setShowNotifications] = useState(false);
     const navigate = useNavigate();
 
 
@@ -43,6 +33,12 @@ const Navbar = () => {
                     </div>
 
                     <div className="flex items-center space-x-4">
+                        {user && (
+                            <NotificationBell
+                                count={notifications.filter(n => !n.isRead).length}
+                                onClick={() => setShowNotifications(v => !v)}
+                            />
+                        )}
                         {/* Removed dark mode toggle button */}
                         {(user || admin) ? (
                             <>
@@ -122,6 +118,12 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
+            {showNotifications && user && (
+                <NotificationList
+                    notifications={notifications}
+                    onMarkRead={markAsRead}
+                />
+            )}
         </nav>
     );
 };
