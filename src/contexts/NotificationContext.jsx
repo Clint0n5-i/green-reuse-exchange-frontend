@@ -28,7 +28,7 @@ export const NotificationProvider = ({ children }) => {
 
   const markAsRead = async (id) => {
     await markNotificationRead(id);
-    setNotifications((prev) => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+  setNotifications((prev) => prev.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
   return (

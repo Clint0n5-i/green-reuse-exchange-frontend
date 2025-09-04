@@ -35,7 +35,7 @@ const Navbar = () => {
                     <div className="flex items-center space-x-4">
                         {user && (
                             <NotificationBell
-                                count={notifications.filter(n => !n.isRead).length}
+                                count={notifications.filter(n => !n.read).length}
                                 onClick={() => setShowNotifications(v => !v)}
                             />
                         )}

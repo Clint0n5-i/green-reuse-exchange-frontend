@@ -8,10 +8,10 @@ const NotificationList = ({ notifications, onMarkRead }) => (
     ) : (
       <ul className="space-y-3">
         {notifications.map(n => (
-          <li key={n.id} className={`p-3 rounded-lg flex flex-col ${n.isRead ? 'bg-gray-100' : 'bg-blue-50'}`}>
+          <li key={n.id} className={`p-3 rounded-lg flex flex-col ${n.read ? 'bg-gray-100' : 'bg-blue-50'}`}>
             <span className="text-sm text-gray-800">{n.message}</span>
             <span className="text-xs text-gray-500 mt-1">{new Date(n.createdAt).toLocaleString()}</span>
-            {!n.isRead && (
+            {!n.read && (
               <button
                 className="mt-2 px-3 py-1 text-xs rounded bg-blue-600 text-white hover:bg-blue-700"
                 onClick={() => onMarkRead(n.id)}
