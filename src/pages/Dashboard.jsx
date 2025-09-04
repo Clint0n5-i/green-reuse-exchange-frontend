@@ -175,9 +175,9 @@ const Dashboard = () => {
                 <p className="text-gray-600">Manage items and monitor platform activity</p>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
-                <div className="card text-center">
+            {/* Stats Cards - always in a single row, scrollable on mobile */}
+            <div className="flex gap-4 mb-8 overflow-x-auto pb-2 hide-scrollbar">
+                <div className="card text-center min-w-[160px] flex-shrink-0">
                     <div className="flex justify-center mb-2">
                         <Package className="text-primary-600" size={24} />
                     </div>
@@ -185,7 +185,7 @@ const Dashboard = () => {
                     <div className="text-sm text-gray-600">Total Items</div>
                 </div>
 
-                <div className="card text-center">
+                <div className="card text-center min-w-[160px] flex-shrink-0">
                     <div className="flex justify-center mb-2">
                         <TrendingUp className="text-green-600" size={24} />
                     </div>
@@ -193,7 +193,7 @@ const Dashboard = () => {
                     <div className="text-sm text-gray-600">Available Items</div>
                 </div>
 
-                <div className="card text-center">
+                <div className="card text-center min-w-[160px] flex-shrink-0">
                     <div className="flex justify-center mb-2">
                         <Users className="text-blue-600" size={24} />
                     </div>
@@ -201,7 +201,7 @@ const Dashboard = () => {
                     <div className="text-sm text-gray-600">Claimed Items</div>
                 </div>
 
-                <div className="card text-center">
+                <div className="card text-center min-w-[160px] flex-shrink-0">
                     <div className="flex justify-center mb-2">
                         <Shield className="text-purple-600" size={24} />
                     </div>

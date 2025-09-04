@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { itemService } from '../services/api.js'
 import ItemCard from '../components/ItemCard.jsx'
+import Carousel from '../components/Carousel.jsx'
 import SearchBar from '../components/SearchBar.jsx'
 import { Filter, Grid, List } from 'lucide-react'
 
@@ -111,22 +112,25 @@ const BrowseItems = () => {
                     </div>
                 </div>
 
-                {/* Available Items Section */}
+                {/* Available Items Carousel Section */}
                 <div className="mb-10">
                     <h2 className="text-2xl font-bold text-gray-700 mb-4">Available Items</h2>
-                    <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6">
-                        {availableItems.length === 0 ? (
-                            <div className="col-span-full text-center text-gray-500 py-8">No available items found.</div>
-                        ) : (
-                            availableItems.map(item => (
-                                    <ItemCard
-                                        key={item.id}
-                                        item={item}
-                                        onUpdate={handleItemUpdate}
-                                    />
-                            ))
-                        )}
-                    </div>
+                    {availableItems.length === 0 ? (
+                        <div className="col-span-full text-center text-gray-500 py-8">No available items found.</div>
+                    ) : (
+                        <Carousel
+                            items={availableItems}
+                            renderItem={item => (
+                                <ItemCard
+                                    key={item.id}
+                                    item={item}
+                                    onUpdate={handleItemUpdate}
+                                />
+                            )}
+                            autoScroll={true}
+                            scrollSpeed={30}
+                        />
+                    )}
                 </div>
 
                 {/* All Items Grid/List */}

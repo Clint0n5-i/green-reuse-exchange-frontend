@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext.jsx'
 import { Link } from 'react-router-dom'
 import { itemService } from '../services/api.js'
 import ItemCard from '../components/ItemCard.jsx'
+import Carousel from '../components/Carousel.jsx'
 import { ArrowRight, Leaf, Users, MapPin, Package } from 'lucide-react'
 
 const Home = () => {
@@ -107,16 +108,18 @@ const Home = () => {
                     </Link>
                 </div>
 
+
                 {loading ? (
                     <div className="flex justify-center py-12">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                     </div>
                 ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {recentItems.map(item => (
-                            <ItemCard key={item.id} item={item} />
-                        ))}
-                    </div>
+                    <Carousel
+                        items={recentItems}
+                        renderItem={item => <ItemCard key={item.id} item={item} />}
+                        autoScroll={true}
+                        scrollSpeed={30}
+                    />
                 )}
 
                 {!loading && recentItems.length === 0 && (
